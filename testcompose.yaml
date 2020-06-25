@@ -1,0 +1,22 @@
+version: '2.0'
+
+services:
+  redis:
+    image: redis
+
+  api:
+    image: linkextractor-api:v1
+    #build: ./api
+    ports:
+      - "5000:5000"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - HP_PROXY="test"
+      - HPS_PROXY="test"
+      - PYTHONUNBUFFERED=0
+  web:
+    image: linkextractor-ui:v1
+    ports:
+      - "80:80"
+    environment:
+      - API_ENDPOINT=http://api:5000/api/
